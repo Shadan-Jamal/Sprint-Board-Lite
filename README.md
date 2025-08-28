@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Sprint Board Lite – Frontend
 
-## Getting Started
+A Kanban-style sprint board built with Next.js (App Router), featuring task CRUD, drag-and-drop, filtering, optimistic updates, and offline write queue.
 
-First, run the development server:
+## Setup
 
+1) Install dependencies
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2) Environment
+- Create `.env.local`:
+```bash
+NEXT_PUBLIC_API_URL=http://localhost:8000
+```
+- Create `.env.production`
+```bash
+NEXT_PUBLIC_API_URL=https://sprint-board-lite-backend.onrender.com
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3) Run the app
+```bash
+npm run dev
+# http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4) Backend (json-server)
+- Backend runs separately
+- Endpoints expected:
+  - GET /tasks
+  - POST /tasks
+  - PATCH /tasks/:id
+  - DELETE /tasks/:id
 
-## Learn More
+## Decisions Taken
 
-To learn more about Next.js, take a look at the following resources:
+- Next.js App Router with client-side pages for simplicity and fast UI iteration.
+- API base URL via `NEXT_PUBLIC_API_URL` to cleanly switch dev/prod without code changes.
+- Local state with a custom `useTasks` hook to centralize:
+  - Fetching, filtering, add/edit/delete, status updates.
+  - Optimistic UI updates for snappy UX.
+  - Offline queue (persisted in localStorage) with auto-retry on reconnect.
+- Drag-and-drop using `motion` for minimal dependencies and smooth interactions.
+- Filtering lifted to board level to avoid duplicate hook instances and ensure board renders from `filteredTasks`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Variant
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- UI/UX variant: “Sprint Board Lite”
+  - 3 columns: `todo`, `progress`, `done`
+  - Inline card actions: Edit description, Delete
+  - Filter by text and priority (All/Low/Medium/High)
+  - Queued badge displayed on cards when writes are pending (offline or failed)
 
-## Deploy on Vercel
+## Time Spent
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Approximately 4 hours
+  - Wiring task state, filtering, and modal
+  - DnD interactions and hit testing for columns
+  - CRUD integrations with json-server
+  - Env configuration for separate backend deployments
+  - Offline queue + optimistic updates + UI badges
