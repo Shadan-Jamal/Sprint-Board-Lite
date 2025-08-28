@@ -15,11 +15,11 @@ const LoginForm = () => {
     const[passVisibility, setPassVisibility] = useState(false)
     const router = useRouter()
 
-    if(localStorage.getItem("fake-token")){
+    if (typeof window !== "undefined" && window.localStorage.getItem("fake-token")) {
         tokenExists.current = "Logged In!"
         setTimeout(() => {
             router.replace("/board")
-        },1500)
+        }, 1500)
     }
 
     const handleSubmit = (e : FormEvent<HTMLFormElement>) => {
