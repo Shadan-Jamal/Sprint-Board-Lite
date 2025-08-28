@@ -29,6 +29,17 @@ export const useTasks = () => {
         fetchTasks()
     }, [])
 
+    const updateTaskStatus = async (taskId: string, newStatus: "todo" | "progress" | "done") => {
+        const payload = { status: newStatus, updatedAt: new Date().toISOString() }
+
+        setTasks(prev => prev.map(t => t.id === taskId ? { ...t, ...payload } : t))
+        try {
+            await axios.patch(`${API_URL}/tasks/${taskId}`, payload)
+        } catch (err) {
+            console.error(err)
+        }
+    }
+
     const addNewTask = async (newTask : Omit<Tasks[0], 'id'>) => {
 
     }
@@ -43,6 +54,7 @@ export const useTasks = () => {
 
     return {
         tasks,
+        updateTaskStatus,
         addNewTask,
         fetchTasks,
         filterTasks,
