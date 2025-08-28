@@ -2,8 +2,11 @@ import Navbar from "../Navbar"
 import Todo from "./Todo"
 import Progress from "./Progress"
 import Done from "./Done"
+import { useTasks } from "@/hooks/useTasks"
 
 const BoardSection = () => {
+    const {tasks} = useTasks()
+    console.log(tasks)
   return (
     <div className="w-full">
         <Navbar />
