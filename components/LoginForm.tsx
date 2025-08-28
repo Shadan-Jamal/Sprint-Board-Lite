@@ -21,6 +21,7 @@ const LoginForm = () => {
             alert("Password should be more than 8 characters.")
             return;
         }
+        //regex to validate email format
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(input.email)) {
             alert("Enter a valid email");
