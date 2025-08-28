@@ -13,11 +13,16 @@ const BoardSection = () => {
     const {
       tasks,
       updateTaskStatus,
+      refetch
     } = useTasks()
 
     const todoRef = useRef<HTMLDivElement>(null)
     const progressRef = useRef<HTMLDivElement>(null)
     const doneRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+      refetch()
+    },[modalOpen])
 
     const handleDragEnd = (
     taskId: string,
@@ -53,17 +58,17 @@ const BoardSection = () => {
         <Navbar isModalOpen={isModalOpen}/>
         <div className="w-full grid place-content-center grid-cols-3 bg-zinc-800">
             <Todo
-            tasks={tasks} 
+            tasks={tasks.filter((t) => t.status === "todo")} 
             ref={todoRef}
             onDragEnd={handleDragEnd}
             />
             <Progress 
-            tasks={tasks} 
+            tasks={tasks.filter((t) => t.status === "progress")} 
             ref={todoRef}
             onDragEnd={handleDragEnd}
             />
             <Done 
-            tasks={tasks} 
+            tasks={tasks.filter((t) => t.status === "done")} 
             ref={todoRef}
             onDragEnd={handleDragEnd}
             />

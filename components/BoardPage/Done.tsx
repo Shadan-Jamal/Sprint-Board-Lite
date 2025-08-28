@@ -19,7 +19,10 @@ type Props = {
   }) => void
 }
 
-const Done = forwardRef<HTMLDivElement, Props>(({tasks, onDragEnd}, ref) => {
+const Done = forwardRef<HTMLDivElement, Props>(({
+  tasks, 
+  onDragEnd
+}, ref) => {
   return (
     <motion.div
     ref={ref} 

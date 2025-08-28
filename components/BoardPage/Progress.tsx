@@ -20,6 +20,7 @@ type Props = {
 }
 
 const Progress = forwardRef<HTMLDivElement, Props>(({tasks, onDragEnd}, ref) => {
+  console.log(tasks)
   return (
     <motion.div
     ref={ref} 

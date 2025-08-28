@@ -29,7 +29,10 @@ export const useTasks = () => {
         fetchTasks()
     }, [])
 
-    const updateTaskStatus = async (taskId: string, newStatus: "todo" | "progress" | "done") => {
+    const updateTaskStatus = async (
+        taskId: string, 
+        newStatus: "todo" | "progress" | "done") => {
+            console.log(taskId)
         const payload = { status: newStatus, updatedAt: new Date().toISOString() }
 
         setTasks(prev => prev.map(t => t.id === taskId ? { ...t, ...payload } : t))
@@ -41,7 +44,17 @@ export const useTasks = () => {
     }
 
     const addNewTask = async (newTask : Omit<Tasks[0], 'id'>) => {
+        const tempId = `temp-${Date.now()}`
+        const clientTask = { ...newTask, id: tempId }
+        setTasks(prev => [...prev, clientTask])
 
+        try {
+            const res = await axios.post(`${API_URL}/tasks/`, clientTask)
+            const saved = res.data
+            setTasks(prev => prev.map(t => t.id === tempId ? { ...saved } : t))
+        } catch (err) {
+            console.error(err)
+        }
     }
 
     const deleteTask = async (id : string) => {
@@ -56,7 +69,7 @@ export const useTasks = () => {
         tasks,
         updateTaskStatus,
         addNewTask,
-        fetchTasks,
+        refetch : fetchTasks,
         filterTasks,
         deleteTask
     }
