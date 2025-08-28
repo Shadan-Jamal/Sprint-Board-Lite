@@ -17,9 +17,16 @@ type Props = {
     evt: PointerEvent, 
     info: { point: { x: number, y: number } 
   }) => void
+  onDelete: (id: string) => void
+  onEdit: (id: string, description: string) => void
 }
 
-const Todo = forwardRef<HTMLDivElement, Props>(({tasks, onDragEnd}, ref) => {
+const Todo = forwardRef<HTMLDivElement, Props>(({
+  tasks, 
+  onDelete,
+  onDragEnd,
+  onEdit
+}, ref) => {
   console.log(tasks)
   return (
     <motion.div
@@ -34,6 +41,8 @@ const Todo = forwardRef<HTMLDivElement, Props>(({tasks, onDragEnd}, ref) => {
           description={t.description}
           priority={t.priority}
           onDragEnd={onDragEnd}
+          onDelete={onDelete}
+          onEdit={onEdit}
           />
         }
         )}

@@ -1,40 +1,40 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import Navbar from "../Navbar"
-import Todo from "./Todo"
-import Progress from "./Progress"
-import Done from "./Done"
 import CreateNewTask from "../CreateNewTask";
+import Navbar from "../Navbar"
+import Done from "./Done"
+import Progress from "./Progress"
+import Todo from "./Todo"
+import { useEffect, useRef, useState } from "react";
+import { useTasks } from "@/hooks/useTasks";
 import FilterOptions from "./FilterOptions";
-import { useTasks } from "@/hooks/useTasks"
 
 const BoardSection = () => {
   const [modalOpen, isModalOpen] = useState(false)
-    const {
-      tasks,
-      updateTaskStatus,
-      refetch,
-      filterTasks,
-      filteredTasks,
-    } = useTasks()
+  const {  
+    updateTaskStatus, 
+    refetch, 
+    filteredTasks, 
+    filterTasks, 
+    deleteTask, 
+    updateTaskDescription,
+  } = useTasks()
 
-    const todoRef = useRef<HTMLDivElement>(null)
-    const progressRef = useRef<HTMLDivElement>(null)
-    const doneRef = useRef<HTMLDivElement>(null)
+  const todoRef = useRef<HTMLDivElement>(null)
+  const progressRef = useRef<HTMLDivElement>(null)
+  const doneRef = useRef<HTMLDivElement>(null)
+  
+  useEffect(() => {
+    refetch()
+  },[modalOpen])
 
-    useEffect(() => {
-      refetch()
-    },[modalOpen])
-
-    const handleDragEnd = (
+  const handleDragEnd = (
     taskId: string,
      _evt : PointerEvent,
       info: { point: { x: number, y: number } 
     }) => {
-
     const point = info.point
-
+    console.log(point)
     const inBox = (el: HTMLDivElement | null) => {
       if (!el) return false
       const rect = el.getBoundingClientRect()
@@ -53,34 +53,49 @@ const BoardSection = () => {
       updateTaskStatus(taskId, "done")
       return
     }
-
   }
-    console.log(tasks)
+
+  const handleDelete = (id: string) => {
+    deleteTask(id)
+  }
+
+  const handleEdit = (id: string, nextDescription: string) => {
+    updateTaskDescription(id, nextDescription)
+  }
+
   return (
-    <div className="w-full">
+    <div className="font-mono w-full">
         <Navbar isModalOpen={isModalOpen}/>
-        <div className="w-full grid place-content-center grid-cols-3 bg-zinc-800">
-            <FilterOptions onFilter={filterTasks} />
+        <div 
+        className="w-full grid place-items-center grid-cols-3 relative">
+          <FilterOptions onFilter={filterTasks} />
 
-            <Todo
-            tasks={filteredTasks.filter((t) => t.status === "todo")} 
-            ref={todoRef}
-            onDragEnd={handleDragEnd}
-            />
-            
-            <Progress 
-            tasks={filteredTasks.filter((t) => t.status === "progress")} 
-            ref={todoRef}
-            onDragEnd={handleDragEnd}
-            />
+          <Todo
+          ref={todoRef}
+          tasks={filteredTasks.filter(t => t.status === "todo")} 
+          onDragEnd={handleDragEnd}
+          onDelete={handleDelete}
+          onEdit={handleEdit}
+          />
 
-            <Done 
-            tasks={filteredTasks.filter((t) => t.status === "done")} 
-            ref={todoRef}
-            onDragEnd={handleDragEnd}
-            />
+          <Progress 
+          ref={progressRef} 
+          tasks={filteredTasks.filter(t => t.status === "progress")} 
+          onDragEnd={handleDragEnd}
+          onDelete={handleDelete}
+          onEdit={handleEdit}
+          />
+
+          <Done 
+          ref={doneRef} 
+          tasks={filteredTasks.filter(t => t.status === "done")} 
+          onDragEnd={handleDragEnd}
+          onDelete={handleDelete}
+          onEdit={handleEdit}
+          />
+
         </div>
-        {modalOpen && 
+          {modalOpen && 
           <div
           className="absolute inset-0 grid place-content-center  backdrop-blur-md"
           >

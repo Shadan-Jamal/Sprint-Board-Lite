@@ -39,6 +39,7 @@ export const useTasks = () => {
 
         setTasks(prev => prev.map(t => t.id === taskId ? { ...t, ...payload } : t))
         setFilteredTasks(prev => prev.map(t => t.id === taskId ? { ...t, ...payload } : t))
+       
         try {
             await axios.patch(`${API_URL}/tasks/${taskId}`, payload)
         } catch (err) {
@@ -63,7 +64,15 @@ export const useTasks = () => {
     }
 
     const deleteTask = async (id : string) => {
-        
+        // Optimistic remove
+        setTasks(prev => prev.filter(t => t.id !== id))
+        setFilteredTasks(prev => prev.filter(t => t.id !== id))
+
+        try {
+            await axios.delete(`${API_URL}/tasks/${id}`)
+        } catch (err) {
+            console.error(err)
+        }
     }
 
     const filterTasks = (text : string, priority : string) => {
@@ -83,13 +92,26 @@ export const useTasks = () => {
         setFilteredTasks(next)
     }
 
+    const updateTaskDescription = async (id: string, description: string) => {
+        const payload = { description, updatedAt: new Date().toISOString() }
+        setTasks(prev => prev.map(t => t.id === id ? { ...t, ...payload } : t))
+        setFilteredTasks(prev => prev.map(t => t.id === id ? { ...t, ...payload } : t))
+
+        try {
+            await axios.patch(`${API_URL}/tasks/${id}`, payload)
+        } catch (err) {
+            console.error(err)
+        }
+    }
+
     return {
         tasks,
         updateTaskStatus,
         addNewTask,
+        deleteTask,
+        updateTaskDescription,
         refetch : fetchTasks,
         filterTasks,
         filteredTasks,
-        deleteTask
     }
 }

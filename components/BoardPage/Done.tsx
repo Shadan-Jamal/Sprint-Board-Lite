@@ -17,11 +17,16 @@ type Props = {
     evt: PointerEvent, 
     info: { point: { x: number, y: number } 
   }) => void
+  onDelete: (id: string) => void
+  onEdit: (id: string, description: string) => void
+  pendingIds?: Set<string>
 }
 
 const Done = forwardRef<HTMLDivElement, Props>(({
   tasks, 
-  onDragEnd
+  onDragEnd,
+  onDelete,
+  onEdit
 }, ref) => {
   return (
     <motion.div
@@ -35,6 +40,8 @@ const Done = forwardRef<HTMLDivElement, Props>(({
           description={t.description}
           priority={t.priority}
           onDragEnd={onDragEnd}
+          onDelete={onDelete}
+          onEdit={onEdit}
           />
         }
         )}
