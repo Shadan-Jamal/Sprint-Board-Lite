@@ -20,6 +20,7 @@ const BoardSection = () => {
     updateTaskDescription,
     pendingIds,
   } = useTasks()
+
   const todoRef = useRef<HTMLDivElement>(null)
   const progressRef = useRef<HTMLDivElement>(null)
   const doneRef = useRef<HTMLDivElement>(null)
@@ -70,8 +71,7 @@ const BoardSection = () => {
         <div 
         className="w-full grid place-items-center grid-cols-3 relative">
           <FilterOptions onFilter={filterTasks} />
-
-          <Todo
+            <Todo
           ref={todoRef}
           tasks={filteredTasks.filter(t => t.status === "todo")} 
           onDragEnd={handleDragEnd}
@@ -97,7 +97,6 @@ const BoardSection = () => {
           onEdit={handleEdit}
           pendingIds={pendingIds}
           />
-
         </div>
           {modalOpen && 
           <div
