@@ -14,12 +14,14 @@ type Tasks = {
 const API_URL = process.env.NEXT_PUBLIC_API_URL
 export const useTasks = () => {
     const [tasks, setTasks] = useState<Tasks>([])
+    const [filteredTasks, setFilteredTasks] = useState<Tasks>([]);
 
     const fetchTasks = async () => {
         try {
             const response = await axios.get(`${API_URL}/tasks/`)
             const data = await response.data
             setTasks(data)
+            setFilteredTasks(data)
         } catch(err) {
             console.error(err)
         }
@@ -36,6 +38,7 @@ export const useTasks = () => {
         const payload = { status: newStatus, updatedAt: new Date().toISOString() }
 
         setTasks(prev => prev.map(t => t.id === taskId ? { ...t, ...payload } : t))
+        setFilteredTasks(prev => prev.map(t => t.id === taskId ? { ...t, ...payload } : t))
         try {
             await axios.patch(`${API_URL}/tasks/${taskId}`, payload)
         } catch (err) {
@@ -47,11 +50,13 @@ export const useTasks = () => {
         const tempId = `temp-${Date.now()}`
         const clientTask = { ...newTask, id: tempId }
         setTasks(prev => [...prev, clientTask])
+        setFilteredTasks(prev => [...prev, clientTask])
 
         try {
             const res = await axios.post(`${API_URL}/tasks/`, clientTask)
             const saved = res.data
             setTasks(prev => prev.map(t => t.id === tempId ? { ...saved } : t))
+            setFilteredTasks(prev => prev.map(t => t.id === tempId ? { ...saved } : t))
         } catch (err) {
             console.error(err)
         }
@@ -61,8 +66,21 @@ export const useTasks = () => {
         
     }
 
-    const filterTasks = (id : string) => {
+    const filterTasks = (text : string, priority : string) => {
+        const parsedText = (text ?? "").trim().toLowerCase()
+        const parsedPriority = (priority ?? "").toLowerCase()
 
+        const isPriorityActive = parsedText !== "" && parsedPriority !== "priority" && parsedPriority !== "all"
+
+        const next = tasks.filter((t) => {
+            const matchesText =
+                !parsedText ||
+                t.title.toLowerCase().includes(parsedText)
+            const matchesPriority =
+                !isPriorityActive || t.priority.toLowerCase() === parsedPriority
+            return matchesText && matchesPriority
+        })
+        setFilteredTasks(next)
     }
 
     return {
@@ -71,6 +89,7 @@ export const useTasks = () => {
         addNewTask,
         refetch : fetchTasks,
         filterTasks,
+        filteredTasks,
         deleteTask
     }
 }

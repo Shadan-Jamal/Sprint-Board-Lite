@@ -6,6 +6,7 @@ import Todo from "./Todo"
 import Progress from "./Progress"
 import Done from "./Done"
 import CreateNewTask from "../CreateNewTask";
+import FilterOptions from "./FilterOptions";
 import { useTasks } from "@/hooks/useTasks"
 
 const BoardSection = () => {
@@ -13,7 +14,9 @@ const BoardSection = () => {
     const {
       tasks,
       updateTaskStatus,
-      refetch
+      refetch,
+      filterTasks,
+      filteredTasks,
     } = useTasks()
 
     const todoRef = useRef<HTMLDivElement>(null)
@@ -57,18 +60,22 @@ const BoardSection = () => {
     <div className="w-full">
         <Navbar isModalOpen={isModalOpen}/>
         <div className="w-full grid place-content-center grid-cols-3 bg-zinc-800">
+            <FilterOptions onFilter={filterTasks} />
+
             <Todo
-            tasks={tasks.filter((t) => t.status === "todo")} 
+            tasks={filteredTasks.filter((t) => t.status === "todo")} 
             ref={todoRef}
             onDragEnd={handleDragEnd}
             />
+            
             <Progress 
-            tasks={tasks.filter((t) => t.status === "progress")} 
+            tasks={filteredTasks.filter((t) => t.status === "progress")} 
             ref={todoRef}
             onDragEnd={handleDragEnd}
             />
+
             <Done 
-            tasks={tasks.filter((t) => t.status === "done")} 
+            tasks={filteredTasks.filter((t) => t.status === "done")} 
             ref={todoRef}
             onDragEnd={handleDragEnd}
             />
