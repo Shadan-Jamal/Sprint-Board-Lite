@@ -1,20 +1,28 @@
 "use client"
-import { useRouter } from "next/navigation"
+
 import BoardSection from "@/components/BoardPage/BoardSection"
+import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
 
 const Page = () => {
   const router = useRouter()
+  const [ready, setReady] = useState(false)
 
-  const token = localStorage.getItem("fake-token")
-  if (!token) {
-    router.replace("/login")
-    return
-  }
+  useEffect(() => {
+    const token = typeof window !== "undefined" ? localStorage.getItem("fake-token") : null
+    if (!token) {
+      router.replace("/login")
+      return
+    }
+    setReady(true)
+  }, [router])
+
+  if (!ready) return null
 
   return (
-    <section className="font-mono w-screen h-auto bg-zinc-800">
+    <div className="w-screen h-auto min-h-screen bg-zinc-800">
         <BoardSection />
-    </section>
+    </div>
   )
 }
 
