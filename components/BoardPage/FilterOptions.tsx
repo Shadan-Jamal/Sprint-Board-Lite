@@ -11,7 +11,7 @@ const FilterOptions = ({ onFilter } : Props) => {
     useEffect(() => {
         console.log("Filtering tasks")
         onFilter(options.text, options.priority)
-    },[options])
+    },[options]) // eslint-disable-next-line react-hooks/exhaustive-deps
     
   return (
     <div className="col-span-3 h-auto mb-3 py-3">

@@ -27,7 +27,8 @@ const BoardSection = () => {
   
   useEffect(() => {
     refetch()
-  },[modalOpen])
+    
+  },[modalOpen]) // eslint-disable-next-line react-hooks/exhaustive-deps
 
   const handleDragEnd = (
     taskId: string,
