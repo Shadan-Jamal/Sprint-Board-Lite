@@ -23,15 +23,13 @@ const QUEUE_KEY = "taskWriteQueue"
 const isOnline = () => typeof navigator !== "undefined" ? navigator.onLine : true
 const API_URL = process.env.NEXT_PUBLIC_API_URL
 
-
-
 export const useTasks = () => {
     const [tasks, setTasks] = useState<Tasks>([])
     const [filteredTasks, setFilteredTasks] = useState<Tasks>([]);
     const [pendingIds, setPendingIds] = useState<Set<string>>(new Set())
 
     const queueRef = useRef<QueueItem[]>([])
-
+    console.log(API_URL)
     //loading the queue with the queued items in localstorage
     const loadQueue = () => {
         try {

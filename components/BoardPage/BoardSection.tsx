@@ -20,7 +20,6 @@ const BoardSection = () => {
     updateTaskDescription,
     pendingIds,
   } = useTasks()
-
   const todoRef = useRef<HTMLDivElement>(null)
   const progressRef = useRef<HTMLDivElement>(null)
   const doneRef = useRef<HTMLDivElement>(null)
@@ -29,12 +28,12 @@ const BoardSection = () => {
     refetch()
     
   },[modalOpen]) // eslint-disable-next-line react-hooks/exhaustive-deps
-
+  
   const handleDragEnd = (
     taskId: string,
-     _evt : PointerEvent,
-      info: { point: { x: number, y: number } 
-    }) => {
+    _evt : PointerEvent,
+    info: { point: { x: number, y: number } 
+  }) => {
     const point = info.point
     console.log(point)
     const inBox = (el: HTMLDivElement | null) => {
@@ -42,7 +41,7 @@ const BoardSection = () => {
       const rect = el.getBoundingClientRect()
       return point.x >= rect.left && point.x <= rect.right && point.y >= rect.top && point.y <= rect.bottom
     }
-
+    
     if (inBox(todoRef.current)) {
       updateTaskStatus(taskId, "todo")
       return
@@ -56,15 +55,15 @@ const BoardSection = () => {
       return
     }
   }
-
+  
   const handleDelete = (id: string) => {
     deleteTask(id)
   }
-
+  
   const handleEdit = (id: string, nextDescription: string) => {
     updateTaskDescription(id, nextDescription)
   }
-
+  
   return (
     <div className="font-mono w-full">
         <Navbar isModalOpen={isModalOpen}/>

@@ -39,7 +39,6 @@ const CreateNewTask = ({isModalOpen} : Props) => {
             alert("Failed to create task. Please try again.")
         }
     }
-
   return (
         <div 
         className="bg-zinc-200 w-[300px] h-auto rounded-md border-2 border-slate-600 relative px-5 py-8">

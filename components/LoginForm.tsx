@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, useRef } from "react";
 import { useRouter } from "next/navigation";
 
 type TokenType = {
@@ -11,8 +11,16 @@ type TokenType = {
 
 const LoginForm = () => {
     const [input,setInput] = useState( { email : "", password : "" })
+    const tokenExists = useRef("")
     const[passVisibility, setPassVisibility] = useState(false)
     const router = useRouter()
+
+    if(localStorage.getItem("fake-token")){
+        tokenExists.current = "Logged In!"
+        setTimeout(() => {
+            router.replace("/board")
+        },1500)
+    }
 
     const handleSubmit = (e : FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -43,7 +51,7 @@ const LoginForm = () => {
                 <div className='w-full border-b-1 py-2'>
                     <h1 className='text-center text-2xl'>Login</h1>
                 </div>
-            <form onSubmit={(e) => handleSubmit(e)}
+            {!tokenExists.current ? <form onSubmit={(e) => handleSubmit(e)}
             className='w-full px-3 py-4 flex flex-col gap-4 justify-around items-center'>
                 <div className='w-full border-b-1 px-2'>
                     <input 
@@ -72,6 +80,8 @@ const LoginForm = () => {
                     <button type="submit" className="hover:cursor-pointer  px-2 py-1">Submit</button>
                 </div>
             </form>
+            : <h1 className="text-lg text-white p-5">Already Logged In</h1>    
+        }
      </div>
   )
 }
