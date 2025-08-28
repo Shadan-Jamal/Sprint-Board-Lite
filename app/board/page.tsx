@@ -1,6 +1,6 @@
 "use client"
 import { useRouter } from "next/navigation"
-import Navbar from "@/components/Navbar"
+import BoardSection from "@/components/BoardPage/BoardSection"
 
 const page = () => {
   const router = useRouter()
@@ -12,9 +12,9 @@ const page = () => {
   }
 
   return (
-    <div className="w-screen h-auto bg-zinc-800">
-        <Navbar />
-    </div>
+    <section className="w-screen h-auto bg-zinc-800">
+        <BoardSection />
+    </section>
   )
 }
 
