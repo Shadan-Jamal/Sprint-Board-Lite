@@ -53,4 +53,5 @@ const Progress = forwardRef<HTMLDivElement, Props>(({
   )
 })
 
+Progress.displayName = "Progress"
 export default Progress

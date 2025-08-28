@@ -52,4 +52,5 @@ const Done = forwardRef<HTMLDivElement, Props>(({
   )
 })
 
+Done.displayName = "Done"
 export default Done

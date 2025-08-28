@@ -53,4 +53,5 @@ const Todo = forwardRef<HTMLDivElement, Props>(({
   )
 })
 
+Todo.displayName = "Todo"
 export default Todo
