@@ -19,7 +19,6 @@ type Props = {
   }) => void
   onDelete: (id: string) => void
   onEdit: (id: string, description: string) => void
-  pendingIds?: Set<string>
 }
 
 const Done = forwardRef<HTMLDivElement, Props>(({
@@ -34,6 +33,7 @@ const Done = forwardRef<HTMLDivElement, Props>(({
     className="h-screen w-full border-r-1 border-t-1 border-r-white border-t-white flex flex-col justify-start items-center gap-5 px-5 py-5">
         {tasks.map((t) => {
          return  <DraggableTask
+         key={t.id}
           id={t.id}
           title={t.title}
           status={t.status}

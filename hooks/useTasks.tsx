@@ -76,17 +76,17 @@ export const useTasks = () => {
     }
 
     const filterTasks = (text : string, priority : string) => {
-        const parsedText = (text ?? "").trim().toLowerCase()
-        const parsedPriority = (priority ?? "").toLowerCase()
+        const normalizedText = (text ?? "").trim().toLowerCase()
+        const normalizedPriority = (priority ?? "").toLowerCase()
 
-        const isPriorityActive = parsedText !== "" && parsedPriority !== "priority" && parsedPriority !== "all"
+        const isPriorityActive = normalizedPriority !== "" && normalizedPriority !== "priority" && normalizedPriority !== "all"
 
         const next = tasks.filter((t) => {
             const matchesText =
-                !parsedText ||
-                t.title.toLowerCase().includes(parsedText)
+                !normalizedText ||
+                t.title.toLowerCase().includes(normalizedText)
             const matchesPriority =
-                !isPriorityActive || t.priority.toLowerCase() === parsedPriority
+                !isPriorityActive || t.priority.toLowerCase() === normalizedPriority
             return matchesText && matchesPriority
         })
         setFilteredTasks(next)
