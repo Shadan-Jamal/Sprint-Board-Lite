@@ -1,10 +1,18 @@
 "use client";
-
+import { Dispatch, SetStateAction } from "react";
 import { useRouter } from "next/navigation"
 
-const Navbar = () => {
+type Props = {
+    isModalOpen :  Dispatch<SetStateAction<boolean>>;
+}
+
+const Navbar = ({isModalOpen} : Props) => {
     const router = useRouter()
     
+    const handleNewTask = () =>  {
+        isModalOpen(true)
+    }
+
     const handleClick = () => {
         localStorage.removeItem("fake-token")
         router.push("/login")
@@ -18,6 +26,11 @@ const Navbar = () => {
                         <h1 className="text-white font-bold text-lg w-fit">
                             Sprint Board
                         </h1>
+                    </div>
+                    <div className="rounded-md border-1 border-black hover:bg-white/90">
+                        <button 
+                        className="px-1 lg:px-3 py-1 hover:cursor-pointer text-[13px] lg:text-lg text-black"
+                        onClick={handleNewTask}>Create New Task</button>
                     </div>
                 </div>
                 <div className="bg-red-500 rounded-md hover:bg-red-700">

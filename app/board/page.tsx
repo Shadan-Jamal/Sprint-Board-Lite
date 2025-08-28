@@ -12,7 +12,7 @@ const page = () => {
   }
 
   return (
-    <section className="w-screen h-auto bg-zinc-800">
+    <section className="font-mono w-screen h-auto bg-zinc-800">
         <BoardSection />
     </section>
   )
