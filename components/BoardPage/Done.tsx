@@ -19,13 +19,15 @@ type Props = {
   }) => void
   onDelete: (id: string) => void
   onEdit: (id: string, description: string) => void
+  pendingIds?: Set<string>
 }
 
 const Done = forwardRef<HTMLDivElement, Props>(({
   tasks, 
   onDragEnd,
   onDelete,
-  onEdit
+  onEdit,
+  pendingIds
 }, ref) => {
   return (
     <motion.div
@@ -42,6 +44,7 @@ const Done = forwardRef<HTMLDivElement, Props>(({
           onDragEnd={onDragEnd}
           onDelete={onDelete}
           onEdit={onEdit}
+          isQueued={pendingIds?.has(t.id)}
           />
         }
         )}

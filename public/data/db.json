@@ -5,27 +5,27 @@
       "title": "task 1",
       "description": "add a site",
       "priority": "high",
-      "status": "done",
+      "status": "todo",
       "createdAt": "2025-08-28T13:06:09.229Z",
-      "updatedAt": "2025-08-28T13:38:13.439Z"
+      "updatedAt": "2025-08-28T14:04:40.636Z"
     },
     {
       "id": "temp-1756387474414",
       "title": "task 2",
       "description": "add a button",
       "priority": "low",
-      "status": "todo",
+      "status": "progress",
       "createdAt": "2025-08-28T13:24:34.414Z",
-      "updatedAt": "2025-08-28T13:38:06.173Z"
+      "updatedAt": "2025-08-28T14:04:39.545Z"
     },
     {
       "id": "temp-1756388133240",
       "title": "task 3",
       "description": "add a nav",
       "priority": "low",
-      "status": "progress",
+      "status": "done",
       "createdAt": "2025-08-28T13:35:33.240Z",
-      "updatedAt": "2025-08-28T13:38:12.372Z"
+      "updatedAt": "2025-08-28T14:04:35.824Z"
     }
   ]
 }

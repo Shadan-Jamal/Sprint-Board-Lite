@@ -19,13 +19,15 @@ type Props = {
   }) => void
   onDelete: (id: string) => void
   onEdit: (id: string, description: string) => void
+  pendingIds?: Set<string>
 }
 
 const Todo = forwardRef<HTMLDivElement, Props>(({
   tasks, 
   onDelete,
   onDragEnd,
-  onEdit
+  onEdit,
+  pendingIds
 }, ref) => {
   console.log(tasks)
   return (
@@ -43,6 +45,7 @@ const Todo = forwardRef<HTMLDivElement, Props>(({
           onDragEnd={onDragEnd}
           onDelete={onDelete}
           onEdit={onEdit}
+          isQueued={pendingIds?.has(t.id)}
           />
         }
         )}

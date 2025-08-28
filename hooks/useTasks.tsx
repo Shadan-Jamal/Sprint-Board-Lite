@@ -74,6 +74,12 @@ export const useTasks = () => {
         fetchTasks()
     }, [])
 
+    useEffect(() => {
+        const onOnline = () => { flushQueue() }
+        window.addEventListener("online", onOnline)
+        return () => window.removeEventListener("online", onOnline)
+    }, [])
+
     //fetching all the pending operations in queue and executing them
     const flushQueue = async () => {
         if (!isOnline() || queueRef.current.length === 0) return
@@ -110,10 +116,18 @@ export const useTasks = () => {
         setTasks(prev => prev.map(t => t.id === taskId ? { ...t, ...payload } : t))
         setFilteredTasks(prev => prev.map(t => t.id === taskId ? { ...t, ...payload } : t))
        
+        if (!isOnline()) {
+            queueRef.current.push({ type: "updateStatus", id: taskId, status: newStatus, updatedAt: payload.updatedAt })
+            saveQueue()
+            return
+        }
+
         try {
             await axios.patch(`${API_URL}/tasks/${taskId}`, payload)
         } catch (err) {
-            console.error(err)
+            // enqueue on failure and keep optimistic UI
+            queueRef.current.push({ type: "updateStatus", id: taskId, status: newStatus, updatedAt: payload.updatedAt })
+            saveQueue()
         }
     }
 
@@ -123,13 +137,20 @@ export const useTasks = () => {
         setTasks(prev => [...prev, clientTask])
         setFilteredTasks(prev => [...prev, clientTask])
 
+        if (!isOnline()) {
+            queueRef.current.push({ type: "add", tempId, payload: newTask })
+            saveQueue()
+            return
+        }
+
         try {
             const res = await axios.post(`${API_URL}/tasks/`, clientTask)
             const saved = res.data
             setTasks(prev => prev.map(t => t.id === tempId ? { ...saved } : t))
             setFilteredTasks(prev => prev.map(t => t.id === tempId ? { ...saved } : t))
         } catch (err) {
-            console.error(err)
+            queueRef.current.push({ type: "add", tempId, payload: newTask })
+            saveQueue()
         }
     }
 
@@ -138,10 +159,18 @@ export const useTasks = () => {
         setTasks(prev => prev.filter(t => t.id !== id))
         setFilteredTasks(prev => prev.filter(t => t.id !== id))
 
+        if (!isOnline()) {
+            queueRef.current.push({ type: "delete", id })
+            saveQueue()
+            return
+        }
+
         try {
             await axios.delete(`${API_URL}/tasks/${id}`)
         } catch (err) {
-            console.error(err)
+            // Keeping it removed locally but ensure deletion is queued for retry
+            queueRef.current.push({ type: "delete", id })
+            saveQueue()
         }
     }
 
@@ -167,21 +196,35 @@ export const useTasks = () => {
         setTasks(prev => prev.map(t => t.id === id ? { ...t, ...payload } : t))
         setFilteredTasks(prev => prev.map(t => t.id === id ? { ...t, ...payload } : t))
 
+        if (!isOnline()) {
+            queueRef.current.push({ type: "updateDescription", id, description, updatedAt: payload.updatedAt })
+            saveQueue()
+            return
+        }
+
         try {
             await axios.patch(`${API_URL}/tasks/${id}`, payload)
         } catch (err) {
-            console.error(err)
+            queueRef.current.push({ type: "updateDescription", id, description, updatedAt: payload.updatedAt })
+            saveQueue()
         }
     }
 
     return {
+        //global state for tasks
         tasks,
-        updateTaskStatus,
+        filteredTasks,
+
+        //task operations
         addNewTask,
         deleteTask,
+        updateTaskStatus,
         updateTaskDescription,
         refetch : fetchTasks,
         filterTasks,
-        filteredTasks,
+
+        //variant
+        pendingIds,
+        flushQueue
     }
 }

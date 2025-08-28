@@ -18,6 +18,7 @@ const BoardSection = () => {
     filterTasks, 
     deleteTask, 
     updateTaskDescription,
+    pendingIds,
   } = useTasks()
 
   const todoRef = useRef<HTMLDivElement>(null)
@@ -76,6 +77,7 @@ const BoardSection = () => {
           onDragEnd={handleDragEnd}
           onDelete={handleDelete}
           onEdit={handleEdit}
+          pendingIds={pendingIds}
           />
 
           <Progress 
@@ -84,6 +86,7 @@ const BoardSection = () => {
           onDragEnd={handleDragEnd}
           onDelete={handleDelete}
           onEdit={handleEdit}
+          pendingIds={pendingIds}
           />
 
           <Done 
@@ -92,6 +95,7 @@ const BoardSection = () => {
           onDragEnd={handleDragEnd}
           onDelete={handleDelete}
           onEdit={handleEdit}
+          pendingIds={pendingIds}
           />
 
         </div>

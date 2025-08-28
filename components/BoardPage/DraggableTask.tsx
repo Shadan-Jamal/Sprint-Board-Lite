@@ -10,6 +10,7 @@ type Props = {
     onDelete: (id: string) => void
     onDragEnd: (taskId: string, evt: PointerEvent, info: { point: { x: number, y: number } }) => void
     onEdit: (id: string, description: string) => void
+    isQueued?: boolean
 }
 
 const DraggableTask = ({
@@ -20,7 +21,8 @@ const DraggableTask = ({
     status, 
     onDelete,
     onDragEnd,
-    onEdit
+    onEdit,
+    isQueued
 } : Props) => {
 
     const handleEdit = () => {
@@ -38,9 +40,19 @@ const DraggableTask = ({
     drag
     dragSnapToOrigin
     whileDrag={{opacity : 0.5}}
+    initial={{opacity : 0, scale : 0}}
+    animate={{
+        opacity : 1, scale : 1, 
+        transition : {ease : "circIn", duration : 0.1
+        }}}
     onDragEnd={(evt, info) => onDragEnd(id, evt as unknown as PointerEvent, info)}
     className="w-full h-fit cursor-grab  bg-white/80 border-2 border-black rounded-sm relative"
     >
+        {isQueued && (
+          <span className="absolute top-1 left-2 text-[10px] bg-amber-400 text-black px-1 rounded">
+            queued
+          </span>
+        )}
         <div
         className="flex flex-col justify-between items-center gap-3 px-2 py-3 relative"
         >
