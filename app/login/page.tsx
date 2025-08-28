@@ -1,5 +1,5 @@
 import LoginForm from "@/components/LoginForm";
-const page = () => {
+const Page = () => {
   return (
     <div className='grid place-content-center w-screen h-screen bg-zinc-800'>
         <LoginForm />
@@ -7,4 +7,4 @@ const page = () => {
   )
 }
 
-export default page;
+export default Page;

@@ -2,7 +2,7 @@
 import { useRouter } from "next/navigation"
 import BoardSection from "@/components/BoardPage/BoardSection"
 
-const page = () => {
+const Page = () => {
   const router = useRouter()
 
   const token = localStorage.getItem("fake-token")
@@ -18,4 +18,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-const home = () => {
+const Page = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const router = useRouter()
 
@@ -31,4 +31,4 @@ const home = () => {
   );
 }
 
-export default home;
+export default Page;
