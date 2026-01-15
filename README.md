@@ -1,7 +1,7 @@
 # Sprint Board Lite – Frontend
 
 A Kanban-style sprint board built with Next.js (App Router), featuring task CRUD, drag-and-drop, filtering, optimistic updates, and offline write queue.
-A Kanban-style sprint board built with Next.js (App Router), featuring task CRUD, drag-and-drop, filtering, optimistic updates, and offline write queue.
+A Kanban-style sprint board built with Next.js (App Router), featuring task CRUD, drag-and-drop, filtering, optimistic updates, and offline write queue..
 
 ## Setup
 
